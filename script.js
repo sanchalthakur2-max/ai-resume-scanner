@@ -141,3 +141,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.upload-area')?.classList.remove('dragover');
     };
 });
+showResults() {
+    this.loading.style.display = 'none';
+    this.results.style.display = 'block';
+    
+    // Trigger entrance animations
+    const elements = this.results.querySelectorAll('*');
+    elements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.05}s`;
+    });
+    
+    // Score bounce
+    document.querySelectorAll('.metric-value').forEach(el => {
+        el.style.animation = 'scoreBounce 0.6s ease';
+    });
+}
