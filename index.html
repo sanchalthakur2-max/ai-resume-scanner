@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Scanner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> AI Resume Scanner</h1>
+            <p>Upload your resume and get instant AI-powered analysis</p>
+        </header>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <p>Drag & drop your resume here or <span class="click-here" id="clickHere">click to browse</span></p>
+            <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.txt" hidden>
+            <small>Supports PDF, DOC, DOCX, TXT (Max 5MB)</small>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing your resume with AI...</p>
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <div class="score-card">
+                <h3>Overall Score: <span id="overallScore">0</span>/100</h3>
+                <div class="score-bar">
+                    <div class="score-fill" id="scoreFill"></div>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric">
+                    <h4>Keywords Match</h4>
+                    <span id="keywordScore" class="metric-value">0%</span>
+                </div>
+                <div class="metric">
+                    <h4>Experience</h4>
+                    <span id="expScore" class="metric-value">0%</span>
+                </div>
+                <div class="metric">
+                    <h4>Skills</h4>
+                    <span id="skillsScore" class="metric-value">0%</span>
+                </div>
+                <div class="metric">
+                    <h4>Format</h4>
+                    <span id="formatScore" class="metric-value">0%</span>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3><i class="fas fa-chart-line"></i> Detailed Analysis</h3>
+                <div class="analysis-content">
+                    <div id="strengths"></div>
+                    <div id="improvements"></div>
+                </div>
+            </div>
+
+            <div class="recommendations">
+                <h3><i class="fas fa-lightbulb"></i> Quick Tips</h3>
+                <div id="tips"></div>
+            </div>
+
+            <button class="analyze-again" onclick="resetApp()">
+                <i class="fas fa-redo"></i> Analyze Another Resume
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
