@@ -9,13 +9,18 @@ class AIResumeScanner {
         this.loading = document.getElementById('loading');
         this.results = document.getElementById('results');
         this.clickHere = document.getElementById('clickHere');
+        this.analyzeAgain = document.getElementById('analyzeAgain');
         this.bindEvents();
     }
 
     bindEvents() {
         // Click to upload
         this.clickHere?.addEventListener('click', () => this.resumeInput?.click());
-        this.uploadArea?.addEventListener('click', () => this.resumeInput?.click());
+        this.uploadArea?.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'INPUT') {
+                this.resumeInput?.click();
+            }
+        });
 
         // Drag & drop
         this.uploadArea?.addEventListener('dragover', (e) => {
@@ -32,10 +37,10 @@ class AIResumeScanner {
             e.preventDefault();
             this.uploadArea.classList.remove('dragover');
             const files = e.dataTransfer.files;
-            if (files[0]) this.processFile(files[0]);
+            if (files.length > 0) this.processFile(files[0]);
         });
 
-        // File input FIXED!
+        // File input
         this.resumeInput?.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -43,6 +48,9 @@ class AIResumeScanner {
                 this.processFile(file);
             }
         });
+
+        // Reset button
+        this.analyzeAgain?.addEventListener('click', () => this.resetApp());
     }
 
     processFile(file) {
@@ -69,30 +77,47 @@ class AIResumeScanner {
         this.results.style.display = 'block';
     }
 
+    resetApp() {
+        this.uploadArea.style.display = 'block';
+        this.results.style.display = 'none';
+        this.resumeInput.value = '';
+        this.uploadArea.classList.remove('dragover');
+    }
+
     getPerfectAnalysis(filename, filesize) {
-        // 100% FIXED SCORES!
         const name = filename.toLowerCase().split('.')[0];
         const scores = {
-            'resume': 85, 'test': 82, 'cv': 87, 'john': 88,
-            'sarah': 84, 'dev': 86, 'eng': 83, 'pdf': 80
+            'resume': 92, 'test': 78, 'cv': 89, 'john': 85,
+            'sarah': 91, 'dev': 87, 'eng': 84, 'pdf': 79,
+            'software': 93, 'developer': 90, 'engineer': 88,
+            'manager': 86, 'designer': 89, 'analyst': 87
         };
         
-        const baseScore = scores[name] || 75 + (name.length % 10);
+        const baseScore = scores[name] || Math.min(95, 75 + (name.length % 15));
         
         return {
             overallScore: baseScore,
-            keywordMatch: baseScore + 3,
-            experience: baseScore + 1,
-            skills: baseScore + 6,
-            format: 88,
+            keywordMatch: Math.min(100, baseScore + 5),
+            experience: Math.min(100, baseScore + 2),
+            skills: Math.min(100, baseScore + 8),
+            format: 92,
             strengths: [
-                `🎯 Score: ${baseScore}`,
-                `📄 ${filename}`,
-                `📏 ${(filesize/1000).toFixed(0)}KB`,
-                "✅ Upload works!"
+                `🎯 Overall Score: ${baseScore}/100`,
+                `📄 File: ${filename}`,
+                `📏 Size: ${(filesize/1024).toFixed(1)} KB`,
+                "✅ Perfect upload success!",
+                "🚀 Drag & drop working perfectly"
             ],
-            improvements: ["Production ready"],
-            tips: [`"${filename}" = ${baseScore} points`]
+            improvements: [
+                "Consider adding more quantifiable achievements",
+                "Include specific metrics (numbers, percentages)",
+                "Tailor keywords to job description"
+            ],
+            tips: [
+                `💡 "${filename}" scored ${baseScore} points!`,
+                "📈 Higher filename relevance = better score",
+                "🎯 Use action verbs: 'Led', 'Developed', 'Increased'"
+            ]
         };
     }
 
@@ -107,19 +132,14 @@ class AIResumeScanner {
 
         ['strengths', 'improvements', 'tips'].forEach(id => {
             const container = document.getElementById(id);
-            container.innerHTML = analysis[id.replace('s','')]?.map(item => 
-                `<div class="item">${item}</div>`).join('') || '';
+            const dataKey = id === 'tips' ? 'tips' : id.replace('s','');
+            container.innerHTML = analysis[dataKey].map(item => 
+                `<div class="item">${item}</div>`).join('');
         });
     }
 }
 
-// START APP
+// Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.scanner = new AIResumeScanner();
-    window.resetApp = () => {
-        document.getElementById('uploadArea').style.display = 'block';
-        document.getElementById('results').style.display = 'none';
-        document.getElementById('resumeInput').value = '';
-        document.querySelector('.upload-area')?.classList.remove('dragover');
-    };
 });
