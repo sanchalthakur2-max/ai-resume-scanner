@@ -14,52 +14,66 @@ class AIResumeScanner {
     }
 
     bindEvents() {
-        // Click to upload
-        this.clickHere?.addEventListener('click', () => this.resumeInput?.click());
-        this.uploadArea?.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'INPUT') {
-                this.resumeInput?.click();
-            }
-        });
+        // Click to upload - FIXED!
+        if (this.clickHere) {
+            this.clickHere.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.resumeInput.click();
+            });
+        }
 
-        // Drag & drop
-        this.uploadArea?.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            this.uploadArea.classList.add('dragover');
-        });
-        
-        this.uploadArea?.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            this.uploadArea.classList.remove('dragover');
-        });
-        
-        this.uploadArea?.addEventListener('drop', (e) => {
-            e.preventDefault();
-            this.uploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) this.processFile(files[0]);
-        });
+        // Drag & drop events
+        if (this.uploadArea) {
+            this.uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                this.uploadArea.classList.add('dragover');
+            });
+            
+            this.uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                this.uploadArea.classList.remove('dragover');
+            });
+            
+            this.uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                this.uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            });
+        }
 
-        // File input
-        this.resumeInput?.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                e.target.value = ''; // Reset for same file
-                this.processFile(file);
-            }
-        });
+        // File input change - FIXED!
+        if (this.resumeInput) {
+            this.resumeInput.addEventListener('change', (e) => {
+                console.log('File selected:', e.target.files[0]?.name); // Debug log
+                const file = e.target.files[0];
+                if (file) {
+                    this.resumeInput.value = ''; // Reset input
+                    this.processFile(file);
+                }
+            });
+        }
 
         // Reset button
-        this.analyzeAgain?.addEventListener('click', () => this.resetApp());
+        if (this.analyzeAgain) {
+            this.analyzeAgain.addEventListener('click', () => this.resetApp());
+        }
     }
 
     processFile(file) {
+        console.log('Processing file:', file.name, file.size); // Debug log
+        
         if (file.size > 5 * 1024 * 1024) {
             alert('File too large! Max 5MB');
             return;
         }
+
         this.showLoading();
         const analysis = this.getPerfectAnalysis(file.name, file.size);
+        
         setTimeout(() => {
             this.displayResults(analysis);
             this.showResults();
@@ -67,17 +81,20 @@ class AIResumeScanner {
     }
 
     showLoading() {
+        console.log('Showing loading...'); // Debug log
         this.uploadArea.style.display = 'none';
         this.loading.style.display = 'block';
         this.results.style.display = 'none';
     }
 
     showResults() {
+        console.log('Showing results...'); // Debug log
         this.loading.style.display = 'none';
         this.results.style.display = 'block';
     }
 
     resetApp() {
+        console.log('Resetting app...'); // Debug log
         this.uploadArea.style.display = 'block';
         this.results.style.display = 'none';
         this.resumeInput.value = '';
@@ -106,22 +123,24 @@ class AIResumeScanner {
                 `📄 File: ${filename}`,
                 `📏 Size: ${(filesize/1024).toFixed(1)} KB`,
                 "✅ Perfect upload success!",
-                "🚀 Drag & drop working perfectly"
+                "🚀 Analysis complete!"
             ],
             improvements: [
-                "Consider adding more quantifiable achievements",
-                "Include specific metrics (numbers, percentages)",
-                "Tailor keywords to job description"
+                "➕ Add more quantifiable achievements",
+                "📊 Include metrics (numbers, %)",
+                "🎯 Tailor keywords to job description"
             ],
             tips: [
-                `💡 "${filename}" scored ${baseScore} points!`,
-                "📈 Higher filename relevance = better score",
-                "🎯 Use action verbs: 'Led', 'Developed', 'Increased'"
+                `💡 "${filename}" = ${baseScore} points`,
+                "📈 Use relevant filename for bonus",
+                "⚡ Action verbs boost scores"
             ]
         };
     }
 
     displayResults(analysis) {
+        console.log('Displaying results:', analysis); // Debug log
+        
         document.getElementById('overallScore').textContent = analysis.overallScore;
         document.getElementById('scoreFill').style.width = `${analysis.overallScore}%`;
         
@@ -133,13 +152,16 @@ class AIResumeScanner {
         ['strengths', 'improvements', 'tips'].forEach(id => {
             const container = document.getElementById(id);
             const dataKey = id === 'tips' ? 'tips' : id.replace('s','');
-            container.innerHTML = analysis[dataKey].map(item => 
-                `<div class="item">${item}</div>`).join('');
+            if (analysis[dataKey] && container) {
+                container.innerHTML = analysis[dataKey].map(item => 
+                    `<div class="item">${item}</div>`).join('');
+            }
         });
     }
 }
 
-// Initialize app when DOM is loaded
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Initializing AI Resume Scanner...');
     window.scanner = new AIResumeScanner();
 });
