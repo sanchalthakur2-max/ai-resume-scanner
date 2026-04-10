@@ -23,12 +23,12 @@
             <small>Supports PDF, DOC, DOCX, TXT (Max 5MB)</small>
         </div>
 
-        <div class="loading" id="loading" style="display: none;">
+        <div class="loading" id="loading">
             <div class="spinner"></div>
             <p>Analyzing your resume with AI...</p>
         </div>
 
-        <div class="results" id="results" style="display: none;">
+        <div class="results" id="results">
             <div class="score-card">
                 <h3>Overall Score: <span id="overallScore">0</span>/100</h3>
                 <div class="score-bar">
@@ -68,7 +68,7 @@
                 <div id="tips"></div>
             </div>
 
-            <button class="analyze-again" onclick="resetApp()">
+            <button class="analyze-again" id="analyzeAgain">
                 <i class="fas fa-redo"></i> Analyze Another Resume
             </button>
         </div>
