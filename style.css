@@ -88,6 +88,7 @@ small {
 .loading {
     padding: 60px 40px;
     text-align: center;
+    display: none;
 }
 
 .spinner {
@@ -107,6 +108,7 @@ small {
 
 .results {
     padding: 40px;
+    display: none;
 }
 
 .score-card {
@@ -136,6 +138,7 @@ small {
     background: #facc15;
     border-radius: 10px;
     transition: width 1s ease;
+    width: 0%;
 }
 
 .metrics-grid {
@@ -207,19 +210,18 @@ small {
     border-left: 4px solid #f59e0b;
 }
 
+.item {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
 #tips {
     display: grid;
     gap: 15px;
-}
-
-.tip {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #4f46e5;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
 }
 
 .analyze-again {
