@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+    <div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
+<script>
+particlesJS('particles-js', {
+    particles: {
+        number: { value: 50 },
+        color: { value: '#4f46e5' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.3 },
+        size: { value: 3 },
+        move: { speed: 1 }
+    },
+    interactivity: {
+        events: { onhover: { enable: true, mode: 'repulse' } }
+    }
+});
+</script>
 <body>
     <div class="container">
         <header>
