@@ -14,7 +14,7 @@ class AIResumeScanner {
     }
 
     bindEvents() {
-        // Click to upload - FIXED!
+        // Click to upload
         if (this.clickHere) {
             this.clickHere.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -45,13 +45,13 @@ class AIResumeScanner {
             });
         }
 
-        // File input change - FIXED!
+        // File input change
         if (this.resumeInput) {
             this.resumeInput.addEventListener('change', (e) => {
-                console.log('File selected:', e.target.files[0]?.name); // Debug log
+                console.log('File selected:', e.target.files[0]?.name);
                 const file = e.target.files[0];
                 if (file) {
-                    this.resumeInput.value = ''; // Reset input
+                    this.resumeInput.value = '';
                     this.processFile(file);
                 }
             });
@@ -64,7 +64,7 @@ class AIResumeScanner {
     }
 
     processFile(file) {
-        console.log('Processing file:', file.name, file.size); // Debug log
+        console.log('Processing file:', file.name, file.size);
         
         if (file.size > 5 * 1024 * 1024) {
             alert('File too large! Max 5MB');
@@ -81,20 +81,17 @@ class AIResumeScanner {
     }
 
     showLoading() {
-        console.log('Showing loading...'); // Debug log
         this.uploadArea.style.display = 'none';
         this.loading.style.display = 'block';
         this.results.style.display = 'none';
     }
 
     showResults() {
-        console.log('Showing results...'); // Debug log
         this.loading.style.display = 'none';
         this.results.style.display = 'block';
     }
 
     resetApp() {
-        console.log('Resetting app...'); // Debug log
         this.uploadArea.style.display = 'block';
         this.results.style.display = 'none';
         this.resumeInput.value = '';
@@ -120,27 +117,28 @@ class AIResumeScanner {
             format: 92,
             strengths: [
                 `🎯 Overall Score: ${baseScore}/100`,
-                `📄 File: ${filename}`,
+                `📄 File analyzed: ${filename}`,
                 `📏 Size: ${(filesize/1024).toFixed(1)} KB`,
-                "✅ Perfect upload success!",
-                "🚀 Analysis complete!"
+                "✅ Upload successful!",
+                "🚀 Drag & drop perfect!"
             ],
-            improvements: [
-                "➕ Add more quantifiable achievements",
+            improvement: [  // Changed from 'improvements' to 'improvement'
+                "➕ Add quantifiable achievements",
                 "📊 Include metrics (numbers, %)",
-                "🎯 Tailor keywords to job description"
+                "🎯 Tailor keywords to job"
             ],
             tips: [
                 `💡 "${filename}" = ${baseScore} points`,
-                "📈 Use relevant filename for bonus",
-                "⚡ Action verbs boost scores"
+                "📈 Relevant filename = bonus points",
+                "⚡ Use action verbs (Led, Built, Increased)"
             ]
         };
     }
 
     displayResults(analysis) {
-        console.log('Displaying results:', analysis); // Debug log
+        console.log('Displaying results:', analysis);
         
+        // Update scores
         document.getElementById('overallScore').textContent = analysis.overallScore;
         document.getElementById('scoreFill').style.width = `${analysis.overallScore}%`;
         
@@ -149,19 +147,30 @@ class AIResumeScanner {
         document.getElementById('skillsScore').textContent = `${analysis.skills}%`;
         document.getElementById('formatScore').textContent = `${analysis.format}%`;
 
-        ['strengths', 'improvements', 'tips'].forEach(id => {
-            const container = document.getElementById(id);
-            const dataKey = id === 'tips' ? 'tips' : id.replace('s','');
-            if (analysis[dataKey] && container) {
-                container.innerHTML = analysis[dataKey].map(item => 
-                    `<div class="item">${item}</div>`).join('');
-            }
-        });
+        // FIXED: Direct property mapping - NO MORE replace('s','') logic!
+        const strengthsContainer = document.getElementById('strengths');
+        const improvementsContainer = document.getElementById('improvements');
+        const tipsContainer = document.getElementById('tips');
+
+        if (strengthsContainer && analysis.strengths) {
+            strengthsContainer.innerHTML = analysis.strengths.map(item => 
+                `<div class="item">${item}</div>`).join('');
+        }
+
+        if (improvementsContainer && analysis.improvement) {
+            improvementsContainer.innerHTML = analysis.improvement.map(item => 
+                `<div class="item">${item}</div>`).join('');
+        }
+
+        if (tipsContainer && analysis.tips) {
+            tipsContainer.innerHTML = analysis.tips.map(item => 
+                `<div class="item">${item}</div>`).join('');
+        }
     }
 }
 
-// Initialize when DOM is ready
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Initializing AI Resume Scanner...');
+    console.log('AI Resume Scanner initialized');
     window.scanner = new AIResumeScanner();
 });
