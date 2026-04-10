@@ -5,30 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Resume Scanner</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
             <h1><i class="fas fa-robot"></i> AI Resume Scanner</h1>
-            <p>Upload resume → Get instant AI analysis</p>
+            <p>Upload your resume and get instant AI-powered analysis</p>
         </header>
 
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">
                 <i class="fas fa-cloud-upload-alt"></i>
             </div>
-            <p>Drag & drop or <span class="click-here" id="clickHere">click here</span></p>
+            <p>Drag & drop your resume here or <span class="click-here" id="clickHere">click to browse</span></p>
             <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.txt" hidden>
-            <small>Max 5MB - PDF, DOC, DOCX, TXT</small>
+            <small>Supports PDF, DOC, DOCX, TXT (Max 5MB)</small>
         </div>
 
-        <div class="loading" id="loading" style="display:none;">
+        <div class="loading" id="loading" style="display: none;">
             <div class="spinner"></div>
-            <p>🔬 AI Analyzing Resume...</p>
+            <p>Analyzing your resume with AI...</p>
         </div>
 
-        <div class="results" id="results" style="display:none;">
+        <div class="results" id="results" style="display: none;">
             <div class="score-card">
                 <h3>Overall Score: <span id="overallScore">0</span>/100</h3>
                 <div class="score-bar">
@@ -37,14 +37,26 @@
             </div>
 
             <div class="metrics-grid">
-                <div class="metric"><h4>Keywords</h4><span id="keywordScore" class="metric-value">0%</span></div>
-                <div class="metric"><h4>Experience</h4><span id="expScore" class="metric-value">0%</span></div>
-                <div class="metric"><h4>Skills</h4><span id="skillsScore" class="metric-value">0%</span></div>
-                <div class="metric"><h4>Format</h4><span id="formatScore" class="metric-value">0%</span></div>
+                <div class="metric">
+                    <h4>Keywords Match</h4>
+                    <span id="keywordScore" class="metric-value">0%</span>
+                </div>
+                <div class="metric">
+                    <h4>Experience</h4>
+                    <span id="expScore" class="metric-value">0%</span>
+                </div>
+                <div class="metric">
+                    <h4>Skills</h4>
+                    <span id="skillsScore" class="metric-value">0%</span>
+                </div>
+                <div class="metric">
+                    <h4>Format</h4>
+                    <span id="formatScore" class="metric-value">0%</span>
+                </div>
             </div>
 
             <div class="analysis-section">
-                <h3><i class="fas fa-chart-line"></i> Analysis</h3>
+                <h3><i class="fas fa-chart-line"></i> Detailed Analysis</h3>
                 <div class="analysis-content">
                     <div id="strengths"></div>
                     <div id="improvements"></div>
@@ -52,63 +64,16 @@
             </div>
 
             <div class="recommendations">
-                <h3><i class="fas fa-lightbulb"></i> Pro Tips</h3>
+                <h3><i class="fas fa-lightbulb"></i> Quick Tips</h3>
                 <div id="tips"></div>
             </div>
 
             <button class="analyze-again" onclick="resetApp()">
-                <i class="fas fa-redo"></i> New Resume
+                <i class="fas fa-redo"></i> Analyze Another Resume
             </button>
         </div>
     </div>
 
-    <script>
-        // COMPLETE WORKING JS - UPLOAD + ANIMATIONS FIXED!
-        class AIResumeScanner {
-            constructor() {
-                this.init();
-            }
-
-            init() {
-                this.uploadArea = document.getElementById('uploadArea');
-                this.resumeInput = document.getElementById('resumeInput');
-                this.loading = document.getElementById('loading');
-                this.results = document.getElementById('results');
-                this.clickHere = document.getElementById('clickHere');
-                this.bindEvents();
-            }
-
-            bindEvents() {
-                if (this.clickHere) {
-                    this.clickHere.onclick = () => this.resumeInput.click();
-                }
-                if (this.uploadArea) {
-                    this.uploadArea.onclick = () => this.resumeInput.click();
-                    this.uploadArea.ondragover = e => {
-                        e.preventDefault();
-                        this.uploadArea.classList.add('dragover');
-                    };
-                    this.uploadArea.ondragleave = e => {
-                        e.preventDefault();
-                        this.uploadArea.classList.remove('dragover');
-                    };
-                    this.uploadArea.ondrop = e => {
-                        e.preventDefault();
-                        this.uploadArea.classList.remove('dragover');
-                        const files = e.dataTransfer.files;
-                        if (files[0]) this.processFile(files[0]);
-                    };
-                }
-                if (this.resumeInput) {
-                    this.resumeInput.onchange = e => {
-                        const file = e.target.files[0];
-                        if (file) {
-                            e.target.value = '';
-                            this.processFile(file);
-                        }
-                    };
-                }
-            }
-
-            processFile(file) {
-                if (file.size
+    <script src="script.js"></script>
+</body>
+</html>
